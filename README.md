@@ -20,7 +20,7 @@ A funcionalidade de finalização de compra calcula o preço total considerando:
 - Arredondamento final para duas casas decimais (Half-up).
 
 ## Partições de domínio e valores limites do domínio
-<img width="1414" height="351" alt="image" src="https://github.com/user-attachments/assets/38a60b7a-e236-4d04-90f2-b393528090d9" />
+<img width="1450" height="351" alt="image" src="https://github.com/user-attachments/assets/6ffc440e-21ef-4ca8-bf72-df810cfb2032" />
 
 ## Instruções de Execução Pré-requisitos
 
