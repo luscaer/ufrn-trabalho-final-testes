@@ -17,7 +17,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.math.BigDecimal;
 import java.util.stream.Stream;
 
-import static ecommerce.service.util.MetodosAuxilar.*;
+import static ecommerce.util.MetodosAuxilar.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 

@@ -1,4 +1,4 @@
-package ecommerce.service.util;
+package ecommerce.util;
 
 import ecommerce.entity.CarrinhoDeCompras;
 import ecommerce.entity.ItemCompra;
