@@ -1,4 +1,4 @@
-package ecommerce.external.fake;
+package ecommerce.fake.external;
 
 import org.springframework.stereotype.Service;
 

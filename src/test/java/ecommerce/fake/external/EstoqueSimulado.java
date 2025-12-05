@@ -1,6 +1,5 @@
-package ecommerce.external.fake;
+package ecommerce.fake.external;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
