@@ -25,7 +25,7 @@ public  class MetodosAuxilar {
     }
 
     public static ItemCompra criarItemFragil(BigDecimal preco, BigDecimal peso, Long quantidade) {
-        ItemCompra item = new ItemCompra();
+        ItemCompra item = criarItem(preco, peso, quantidade);
         item.getProduto().setFragil(true);
         return item;
     }

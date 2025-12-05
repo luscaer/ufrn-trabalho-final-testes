@@ -91,7 +91,6 @@ public class CompraService {
 
 		return subtotalFinal.add(valorFrete).setScale(2, RoundingMode.HALF_UP);
 	}
-	
 
 	private void validarEntradas(CarrinhoDeCompras carrinho) {
 		if (carrinho == null) {

@@ -6,6 +6,7 @@ import ecommerce.external.IEstoqueExternal;
 import ecommerce.external.IPagamentoExternal;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -52,23 +53,83 @@ public class CompraServiceTest {
 
             BigDecimal resultado = compraService.calcularCustoTotal(carrinho);
 
-            assertEquals(resultado, totalEsperado);
+            assertEquals(totalEsperado, resultado);
         }
 
         private static Stream<Arguments> cenariosDeDesconto() {
             return Stream.of(
-                // Partição 1: Sem desconto pois o valor da compra é menor que 500
-                Arguments.of(new BigDecimal("499.99"), new BigDecimal("499.99")),
+                    // Partição 1: Sem desconto pois o valor da compra é menor que 500
+                    Arguments.of(new BigDecimal("499.99"), new BigDecimal("499.99")),
 
-                // Partição 2: Com desconto de 10% pois o valor é maior ou igual a 500 e menor que 1000.00
-                Arguments.of(new BigDecimal("500.00"), new BigDecimal("450.00")),
-                Arguments.of(new BigDecimal("500.01"), new BigDecimal("450.01")),
-                Arguments.of(new BigDecimal("999.99"), new BigDecimal("899.99")),
+                    // Partição 2: Com desconto de 10% pois o valor é maior ou igual a 500 e menor que 1000.00
+                    Arguments.of(new BigDecimal("500.00"), new BigDecimal("450.00")),
+                    Arguments.of(new BigDecimal("500.01"), new BigDecimal("450.01")),
+                    Arguments.of(new BigDecimal("999.99"), new BigDecimal("899.99")),
 
-                // Partição 3: Com desconto de 20% pois o valor é maior ou igual a 1000.00
-                Arguments.of(new BigDecimal("1000.00"), new BigDecimal("800.00")),
-                Arguments.of(new BigDecimal("1000.01"), new BigDecimal("800.01"))
+                    // Partição 3: Com desconto de 20% pois o valor é maior ou igual a 1000.00
+                    Arguments.of(new BigDecimal("1000.00"), new BigDecimal("800.00")),
+                    Arguments.of(new BigDecimal("1000.01"), new BigDecimal("800.01"))
             );
+        }
+    }
+
+    // Testes de Frete
+    @Nested
+    @DisplayName("Regras de frete")
+    class FreteTests {
+
+        @ParameterizedTest(name = "Peso {0}kg deve gerar custo total de R$ {1} (Frete incluso)")
+        @MethodSource("cenariosDeFrete")
+        void deveCalcularFreteBaseCorretamente(BigDecimal peso, BigDecimal custoTotalEsperado) {
+            ItemCompra item = criarItem(new BigDecimal("10.00"), peso, 1L);
+            CarrinhoDeCompras carrinho = criarCarrinho(item);
+
+            BigDecimal resultado = compraService.calcularCustoTotal(carrinho);
+
+            assertEquals(custoTotalEsperado, resultado);
+        }
+
+        private static Stream<Arguments> cenariosDeFrete() {
+            return Stream.of(
+                    // Partição 1: Sem custo de frete pois peso menor ou igual a 5
+                    Arguments.of(new BigDecimal("4.99"), new BigDecimal("10.00")),
+                    Arguments.of(new BigDecimal("5.00"), new BigDecimal("10.00")),
+
+                    // Partição 2: Custo de frete de R$ 2.00 por quilo, pois peso maior que 5 e menor ou igual a 10
+                    Arguments.of(new BigDecimal("5.01"), new BigDecimal("20.02")),
+                    Arguments.of(new BigDecimal("9.99"), new BigDecimal("29.98")),
+                    Arguments.of(new BigDecimal("10.00"), new BigDecimal("30.00")),
+
+                    // Partição 3: Custo de frete de R$ 4.00 por quilo, pois peso maior que 10 e menor ou igual a 50
+                    Arguments.of(new BigDecimal("10.01"), new BigDecimal("50.04")),
+                    Arguments.of(new BigDecimal("49.99"), new BigDecimal("209.96")),
+                    Arguments.of(new BigDecimal("50.00"), new BigDecimal("210.00")),
+
+                    // Partição 4: Custo de frete de R$ 7.00, pois peso maior que 50
+                    Arguments.of(new BigDecimal("50.01"), new BigDecimal("360.07"))
+            );
+        }
+
+        @Test
+        @DisplayName("Deve somar taxa de fragilidade de R$ 5,00 por item")
+        void deveSomarTaxaDeFragilidad() {
+            ItemCompra item = criarItemFragil(new BigDecimal("10.00"), new BigDecimal("1.00"), 1L);
+            CarrinhoDeCompras carrinho = criarCarrinho(item);
+
+            BigDecimal resultado = compraService.calcularCustoTotal(carrinho);
+
+            assertEquals(new BigDecimal("15.00"), resultado);
+        }
+
+        @Test
+        @DisplayName("Deve somar taxa de fragiliade de R$ 5.00 multiplicada pela quantidade")
+        void deveSomarTaxaDeFragilidadPorQuantidade() {
+            ItemCompra item = criarItemFragil(new BigDecimal("10.00"), new BigDecimal("1.00"), 3L);
+            CarrinhoDeCompras carrinho = criarCarrinho(item);
+
+            BigDecimal resultado = compraService.calcularCustoTotal(carrinho);
+
+            assertEquals(new BigDecimal("45.00"), resultado);
         }
     }
 }
