@@ -1,17 +1,25 @@
 package ecommerce.util;
 
-import ecommerce.entity.CarrinhoDeCompras;
-import ecommerce.entity.ItemCompra;
-import ecommerce.entity.Produto;
-import ecommerce.entity.TipoProduto;
+import ecommerce.entity.*;
 
 import java.math.BigDecimal;
 import java.util.List;
 
 public  class MetodosAuxilar {
 
+    public static Cliente criarCliente(Long id, String nome) {
+        Cliente cliente = new Cliente();
+        cliente.setId(id);
+        cliente.setNome(nome);
+        cliente.setRegiao(Regiao.SUDESTE);
+        cliente.setTipo(TipoCliente.OURO);
+
+        return cliente;
+    }
+
     public static ItemCompra criarItem(BigDecimal preco, BigDecimal peso, Long quantidade) {
         Produto produto = new Produto();
+        produto.setId(1L);
         produto.setPreco(preco);
         produto.setPesoFisico(peso);
         produto.setTipo(TipoProduto.ELETRONICO);

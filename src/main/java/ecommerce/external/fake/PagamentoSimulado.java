@@ -6,20 +6,28 @@ import ecommerce.dto.PagamentoDTO;
 import ecommerce.external.IPagamentoExternal;
 
 @Service
-public class PagamentoSimulado implements IPagamentoExternal
-{
+public class PagamentoSimulado implements IPagamentoExternal {
 
-	@Override
+    private boolean autorizado = true;
+    private boolean cancelamentoChamado = false;
+
+    public boolean houveCancelamentoChamado() {
+        return this.cancelamentoChamado;
+    }
+
+    public void setAutorizado(boolean autorizado) {
+        this.autorizado = autorizado;
+    }
+
+    @Override
 	public PagamentoDTO autorizarPagamento(Long clienteId, Double custoTotal)
 	{
-		// TODO Auto-generated method stub
-		return null;
+		return new PagamentoDTO(autorizado, autorizado ? 999L : null);
 	}
 
 	@Override
 	public void cancelarPagamento(Long clienteId, Long pagamentoTransacaoId)
 	{
-		// TODO Auto-generated method stub
-
+        this.cancelamentoChamado = true;
 	}
 }

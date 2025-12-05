@@ -41,7 +41,7 @@ public class CompraService {
 		this.pagamentoExternal = pagamentoExternal;
 	}
 
-	 @Transactional
+    @Transactional
 	public CompraDTO finalizarCompra(Long carrinhoId, Long clienteId) {
 
 		Cliente cliente = clienteService.buscarPorId(clienteId);

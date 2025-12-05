@@ -22,8 +22,7 @@ import java.util.List;
 import java.util.stream.Stream;
 
 import static ecommerce.util.MetodosAuxilar.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
 public class CompraServiceTest {
@@ -62,6 +61,7 @@ public class CompraServiceTest {
         private static Stream<Arguments> cenariosDeDesconto() {
             return Stream.of(
                     // Partição 1: Sem desconto pois o valor da compra é menor que 500
+                    Arguments.of(new BigDecimal("0.00"), new BigDecimal("0.00")),
                     Arguments.of(new BigDecimal("499.99"), new BigDecimal("499.99")),
 
                     // Partição 2: Com desconto de 10% pois o valor é maior ou igual a 500 e menor que 1000.00
