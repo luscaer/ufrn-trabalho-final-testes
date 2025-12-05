@@ -121,7 +121,7 @@ public class CompraService {
                 throw new IllegalArgumentException("Tipo do produto não pode ser nulo: " + p.getNome());
             }
 
-            if (p.getPesoFisico() == null || p.getPesoFisico().compareTo(BigDecimal.ZERO) < 0) {
+            if (p.getPesoFisico() == null || p.getPesoFisico().compareTo(BigDecimal.ZERO) <= 0) {
                 throw new IllegalArgumentException("Peso físico inválido (deve ser > 0) no produto: " + p.getNome());
             }
 		}

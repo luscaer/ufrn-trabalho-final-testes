@@ -11,11 +11,14 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.NullSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Stream;
 
 import static ecommerce.util.MetodosAuxilar.*;
@@ -130,6 +133,132 @@ public class CompraServiceTest {
             BigDecimal resultado = compraService.calcularCustoTotal(carrinho);
 
             assertEquals(new BigDecimal("45.00"), resultado);
+        }
+    }
+
+    // Testes de Robustez
+    @Nested
+    @DisplayName("Validações de Entrada")
+    class ValidacaoTests {
+
+        @Test
+        @DisplayName("Deve lançar exceção se carrinho for nulo")
+        void deveLancarExcecaoCarrinhoNulo() {
+            assertThrows(IllegalArgumentException.class, () -> compraService.calcularCustoTotal(null));
+        }
+
+        @Test
+        @DisplayName("Deve lançar exceção se a lista de itens do carrinho for nula")
+        void deveLancarExcecaoCarrinhoListaDeItensNula() {
+            CarrinhoDeCompras carrinho = new CarrinhoDeCompras();
+            carrinho.setItens(null);
+
+            assertThrows(IllegalArgumentException.class, () -> compraService.calcularCustoTotal(carrinho));
+        }
+
+        @Test
+        @DisplayName("Deve lançar exceção se carrinho estiver vazio")
+        void deveLancarExcecaoCarrinhoVazio() {
+            CarrinhoDeCompras carrinho = criarCarrinho();
+            assertThrows(IllegalArgumentException.class, () -> compraService.calcularCustoTotal(carrinho));
+        }
+
+        @Test
+        @DisplayName("Deve lançar exceção se item for nulo")
+        void deveLancarExcecaoItemNulo() {
+            CarrinhoDeCompras carrinho = new CarrinhoDeCompras();
+
+            List<ItemCompra> itens = new ArrayList<>();
+            itens.add(null);
+
+            carrinho.setItens(itens);
+
+            assertThrows(IllegalArgumentException.class, () -> compraService.calcularCustoTotal(carrinho));
+        }
+
+        @Test
+        @DisplayName("Deve lançar exceção se produto for nulo")
+        void deveLancarExcecaoProdutoNulo() {
+            ItemCompra item = new ItemCompra();
+            item.setProduto(null);
+
+            CarrinhoDeCompras carrinho = criarCarrinho(item);
+
+            assertThrows(IllegalArgumentException.class, () -> compraService.calcularCustoTotal(carrinho));
+        }
+
+        // Pesquisando achei esse @NullSource que já implementa o caso nulo em testes parametrizados
+        @ParameterizedTest(name = "Quantidade inválida {0} deve lançar exceção")
+        @MethodSource("quantidadeInvalidaDeItens")
+        @NullSource
+        void deveLancarExcecaoQuantidadeInvalida(Long quantidade) {
+            ItemCompra item = criarItem(new BigDecimal("10.00"), new BigDecimal("1.00"), quantidade);
+
+            CarrinhoDeCompras carrinho = criarCarrinho(item);
+
+            assertThrows(IllegalArgumentException.class, () -> compraService.calcularCustoTotal(carrinho));
+        }
+
+        private static Stream<Arguments> quantidadeInvalidaDeItens() {
+            return Stream.of(
+                    // Limites 0 e 1 para quantidades inválidas
+                    Arguments.of(0L),
+                    Arguments.of(-1L),
+                    //Partição negativa comum
+                    Arguments.of(-10L)
+            );
+        }
+
+        @ParameterizedTest(name = "Preço inválido {0} deve lançar exceção")
+        @MethodSource("precosInvalidos")
+        @NullSource
+        void deveLancarExcecaoPrecoInvalido(BigDecimal preco) {
+            ItemCompra item = criarItem(preco, new BigDecimal("1.00"), 1L);
+
+            CarrinhoDeCompras carrinho = criarCarrinho(item);
+
+            assertThrows(IllegalArgumentException.class, () -> compraService.calcularCustoTotal(carrinho));
+        }
+
+        private static Stream<Arguments> precosInvalidos() {
+            return Stream.of(
+                    // Limite negativo para preços
+                    Arguments.of(new BigDecimal("-0.01")),
+                    //Partição negativa comum
+                    Arguments.of(new BigDecimal("-10.00"))
+            );
+        }
+
+        @Test
+        @DisplayName("Deve lançar exceção se tipo do produto for nulo")
+        void deveLancarExcecaoTipoProdutoNulo() {
+            ItemCompra item = criarItem(new BigDecimal("10.00"), new BigDecimal("1.00"), 1L);
+            item.getProduto().setTipo(null);
+
+            CarrinhoDeCompras carrinho = criarCarrinho(item);
+
+            assertThrows(IllegalArgumentException.class, () -> compraService.calcularCustoTotal(carrinho));
+        }
+
+        @ParameterizedTest(name = "Peso inválido {0} deve lançar exceção")
+        @MethodSource("pesosInvalidos")
+        @NullSource
+        void deveLancarExcecaoPesoInvalido(BigDecimal peso) {
+            ItemCompra item = criarItem(new BigDecimal("10.00"), peso, 1L);
+
+            CarrinhoDeCompras carrinho = criarCarrinho(item);
+
+            assertThrows(IllegalArgumentException.class, () -> compraService.calcularCustoTotal(carrinho));
+        }
+
+        private static Stream<Arguments> pesosInvalidos() {
+            return Stream.of(
+                    // Valores limites para peso
+                    Arguments.of(BigDecimal.ZERO),
+                    Arguments.of(new BigDecimal("-0.01")),
+                    //Partição negativa comum
+                    Arguments.of(new BigDecimal("-10.00"))
+            );
         }
     }
 }
