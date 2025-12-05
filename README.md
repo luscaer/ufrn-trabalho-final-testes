@@ -23,7 +23,7 @@ A funcionalidade de finalização de compra calcula o preço total considerando:
 
 <img width="1450" height="351" alt="image" src="https://github.com/user-attachments/assets/6ffc440e-21ef-4ca8-bf72-df810cfb2032" />
 
-## Cobertura de arestas calcularCustoTotal()
+## Cobertura de arestas
 
 ### Gerar relatório de cobertura
 <pre> mvn jacoco:report </pre>
@@ -45,6 +45,26 @@ Na primeira execução do relatório de mutantes, apenas um havia sobrevivido
 <img width="1450" height="411" alt="image" src="https://github.com/user-attachments/assets/1036c819-278e-431b-abab-dcdbf9b11631" />
 
 Ele foi morto adicionando um caso de teste com valor de carrinho = 0.00
+
+## Cobertura de mutantes finalizarCompra()
+
+### Gerar relatório de testes mutantes com pitest
+<pre> mvn pitest:mutationCoverage </pre>
+
+<img width="1919" height="465" alt="image" src="https://github.com/user-attachments/assets/63db0020-09d7-40ad-a2fc-192d4d7a74af" />
+
+Na primeira execução do relatório de mutantes, 3 mutantes sobreviveram
+
+<img width="1919" height="652" alt="image" src="https://github.com/user-attachments/assets/f9dd6220-8378-4006-af62-14b1d9b894a3" />
+<img width="1345" height="172" alt="image" src="https://github.com/user-attachments/assets/bafddf19-cdf8-4d8b-a059-e7962b30646c" />
+
+Os dois primeiros foram mortos adicionando uma verificação dos ids e quantidades recebidas.
+<img width="857" height="320" alt="image" src="https://github.com/user-attachments/assets/550cc0d8-8784-4b3c-bca5-8b7470c91222" />
+<img width="857" height="122" alt="image" src="https://github.com/user-attachments/assets/ac70c556-16ab-4a61-8b2e-cc0282992200" />
+
+O terceiro foi morto criando uma verificação se o chamado de cancelamento continua sendo true quando não acontece baixa
+<img width="462" height="111" alt="image" src="https://github.com/user-attachments/assets/52d14331-1f6b-437d-8b04-e654c8f48b8f" />
+<img width="771" height="45" alt="image" src="https://github.com/user-attachments/assets/38dba449-32a9-49c7-af30-8748938d53e7" />
 
 ### O relatório de cobertura dos testes mutantes ficará disponível em:
 target/pit-reports/index.html
