@@ -9,6 +9,16 @@ Autores
 - José Carlos da Silva
 - Lucas Emanuel Ribeiro Costa
 
+## Instruções de Execução Pré-requisitos
+
+- Java 17
+- Maven 3.8+
+- JUnit 5
+- Jacoco (para cobertura)
+
+### Executar os testes
+<pre> mvn clean test </pre>
+
 ## Descrição da Funcionalidade
 
 A funcionalidade de finalização de compra calcula o preço total considerando:
@@ -89,13 +99,3 @@ e
 
 ### O relatório de cobertura dos testes mutantes ficará disponível em:
 target/pit-reports/index.html
-
-## Instruções de Execução Pré-requisitos
-
-- Java 17
-- Maven 3.8+
-- JUnit 5
-- Jacoco (para cobertura)
-
-### Executar os testes
-<pre> mvn clean test </pre>
