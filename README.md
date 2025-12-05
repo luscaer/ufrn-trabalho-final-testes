@@ -3,7 +3,7 @@
 Funcionalidade: Finalização de Compra
 
 Este projeto implementa e testa a funcionalidade de cálculo do custo total da 
-compra (CompraService.calcularCustoTotal) de forma isolada, utilizando Java 17, JUnit 5 e AssertJ.
+compra (CompraService.calcularCustoTotal) de forma isolada, utilizando Java 17, JUnit 5.
 
 Autores
 - José Carlos da Silva
@@ -28,6 +28,7 @@ A funcionalidade de finalização de compra calcula o preço total considerando:
 ### Gerar relatório de cobertura
 <pre> mvn jacoco:report </pre>
 
+<img width="1084" height="265" alt="image" src="https://github.com/user-attachments/assets/d1db4657-d861-499e-b85e-7ddebb70d1a4" />
 <img width="1919" height="652" alt="image" src="https://github.com/user-attachments/assets/f4661929-4730-46bc-acbb-e60acf2c396e" />
 
 ### O relatório de cobertura do jacoco ficará disponível em:
@@ -51,7 +52,7 @@ Ele foi morto adicionando um caso de teste com valor de carrinho = 0.00
 ### Gerar relatório de testes mutantes com pitest
 <pre> mvn pitest:mutationCoverage </pre>
 
-<img width="1919" height="465" alt="image" src="https://github.com/user-attachments/assets/63db0020-09d7-40ad-a2fc-192d4d7a74af" />
+<img width="1084" height="457" alt="image" src="https://github.com/user-attachments/assets/1d4a0a74-bcc2-49fe-9218-68410a5f2e3e" />
 
 Na primeira execução do relatório de mutantes, 3 mutantes sobreviveram
 
@@ -66,6 +67,26 @@ O terceiro foi morto criando uma verificação se o chamado de cancelamento cont
 <img width="462" height="111" alt="image" src="https://github.com/user-attachments/assets/52d14331-1f6b-437d-8b04-e654c8f48b8f" />
 <img width="771" height="45" alt="image" src="https://github.com/user-attachments/assets/38dba449-32a9-49c7-af30-8748938d53e7" />
 
+Para o cenário dois, tivemos os mesmos mutantes sobrevivendo, foram resolvidos com:
+
+<pre>
+  verify(estoqueMock).verificarDisponibilidade(
+                eq(List.of(1L)),
+                eq(List.of(1L))
+        );
+
+  verify(estoqueMock).darBaixa(
+          eq(List.of(1L)),
+          eq(List.of(1L))
+  );
+</pre>
+
+e
+
+<pre>
+  verify(pagamentoMock).cancelarPagamento(eq(1L), eq(12345L));
+</pre>
+
 ### O relatório de cobertura dos testes mutantes ficará disponível em:
 target/pit-reports/index.html
 
@@ -74,7 +95,6 @@ target/pit-reports/index.html
 - Java 17
 - Maven 3.8+
 - JUnit 5
-- AssertJ
 - Jacoco (para cobertura)
 
 ### Executar os testes
