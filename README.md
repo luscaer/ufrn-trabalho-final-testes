@@ -14,23 +14,18 @@ Autores
 A funcionalidade de finalização de compra calcula o preço total considerando:
 
 - Subtotal dos produtos.
-- Descontos por quantidade de itens do mesmo tipo.
 - Desconto por valor total da compra (>500 ou >1000).
-- Cálculo de frete baseado em faixas de peso e região.
+- Cálculo de frete baseado em faixas de peso.
 - Taxa adicional para produtos frágeis.
-- Descontos de fidelidade (Ouro, Prata, Bronze).
 - Arredondamento final para duas casas decimais (Half-up).
 
 ## Partições de domínio e valores limites do domínio
-<img width="1296" height="699" alt="image" src="https://github.com/user-attachments/assets/a2435862-bf0a-492e-ac4c-872551ab2381" />
-
-## Tabelas de decisão
-<img width="1495" height="233" alt="tabela-decisao-descontos" src="https://github.com/user-attachments/assets/8f232cda-c542-4794-aa30-c6d8133fa540" />
+<img width="1411" height="353" alt="image" src="https://github.com/user-attachments/assets/60e38a8e-d406-440a-95b7-4a781be182f0" />
 
 
 ## Instruções de Execução Pré-requisitos
 
-- Java 17+
+- Java 17
 - Maven 3.8+
 - JUnit 5
 - AssertJ
