@@ -1,13 +1,5 @@
 package ecommerce.service;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import ecommerce.dto.CompraDTO;
 import ecommerce.dto.DisponibilidadeDTO;
 import ecommerce.dto.EstoqueBaixaDTO;
@@ -16,12 +8,16 @@ import ecommerce.entity.CarrinhoDeCompras;
 import ecommerce.entity.Cliente;
 import ecommerce.entity.ItemCompra;
 import ecommerce.entity.Produto;
-import ecommerce.entity.Regiao;
-import ecommerce.entity.TipoCliente;
-import ecommerce.entity.TipoProduto;
 import ecommerce.external.IEstoqueExternal;
 import ecommerce.external.IPagamentoExternal;
 import jakarta.transaction.Transactional;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class CompraService {

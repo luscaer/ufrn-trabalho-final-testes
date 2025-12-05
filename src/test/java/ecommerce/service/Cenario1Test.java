@@ -87,7 +87,7 @@ public class Cenario1Test {
     void deveFalharQuandoPagamentoRecusado() {
         Cliente cliente = criarCliente(1L, "Carlos");
         CarrinhoDeCompras carrinho = criarCarrinho(
-            criarItem(new BigDecimal("100.00"), new BigDecimal("1.00"), 1L)
+                criarItem(new BigDecimal("100.00"), new BigDecimal("1.00"), 1L)
         );
 
         when(clienteService.buscarPorId(1L)).thenReturn(cliente);
